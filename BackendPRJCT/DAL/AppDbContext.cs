@@ -12,7 +12,6 @@ namespace BackendPRJCT.DAL
 
 		public DbSet<Slider> Sliders { get; set; }
 		public DbSet<Teacher> Teachers { get; set; }
-		public DbSet<TeacherDetail> TeachersDetails { get; set;}
 		public DbSet<TeacherSkills> TeachersSkills { get; set; }
 		public DbSet<TeacherSM> TeacherSMs { get; set; }
 	}

@@ -33,12 +33,12 @@
                     <h2>@Model.Name</h2>
                     <h5>@Model.Prof</h5>
                     <h4>about me</h4>
-                    <p>@Model.TeacherDetail.AboutMe</p>
+                    <p>@Model.AboutMe</p>
                     <ul>
-                        <li><span>degree: </span>@Model.TeacherDetail.Degree</li>
-                        <li><span>experience: </span>@Model.TeacherDetail.Experience</li>
-                        <li><span>hobbies: </span>@Model.TeacherDetail.Hobby</li>
-                        <li><span>faculty: </span>@Model.TeacherDetail.Faculty</li>
+                        <li><span>degree: </span>@Model.Degree</li>
+                        <li><span>experience: </span>@Model.Experience</li>
+                        <li><span>hobbies: </span>@Model.Hobby</li>
+                        <li><span>faculty: </span>@Model.Faculty</li>
                     </ul>
                 </div>
             </div>
@@ -47,9 +47,9 @@
             <div class="col-md-3 col-sm-4">
                 <div class="teacher-contact">
                     <h4>contact information</h4>
-                    <p><span>mail me : </span>@Model.TeacherDetail.Mail</p>
-                    <p><span>make a call : </span>@Model.TeacherDetail.Number</p>
-                    <p><span>skype : </span> @Model.TeacherDetail.Skype</p>
+                    <p><span>mail me : </span>@Model.Mail</p>
+                    <p><span>make a call : </span>@Model.Number</p>
+                    <p><span>skype : </span> @Model.Skype</p>
                     <ul>
                         @foreach (var sm in Model.TeacherSMs)
                         {
