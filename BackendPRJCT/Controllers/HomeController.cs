@@ -16,6 +16,13 @@ namespace BackendPRJCT.Controllers
 		{
 			HomeVM vm = new();
 			vm.Sliders = _appDbContext.Sliders.ToList();
+			vm.RightBoards = _appDbContext.RightBoards.ToList();
+			vm.Testominal = _appDbContext.Testominals.FirstOrDefault();
+			vm.NoticeBoards = _appDbContext.NoticesBoards.ToList();
+			vm.Choose = _appDbContext.Chooses.FirstOrDefault();
+			vm.Courses = _appDbContext.Courses.Take(3).ToList();
+			vm.Events = _appDbContext.Events.Take(8).ToList();
+			vm.Blogs = _appDbContext.Blogs.Take(3).ToList();
 			return View(vm);
 		}
 	}
