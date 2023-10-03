@@ -26,18 +26,16 @@ namespace BackendPRJCT.Controllers
 
 		public IActionResult Details(int? id)
 		{
-            //var existTeacher = _appDbContext.Teachers
-            //	.Include(p=>p.Image)
-            //	.Include(p=>p.Name)
-            //	.Include(p=>p.Prof)
-            //	.FirstOrDefault(x => x.Id == id);
-            //return View(existTeacher);
-            TeacherVM vm = new();
-            vm.Teachers = _appDbContext.Teachers.ToList();
-            vm.TeacherDetails = _appDbContext.TeachersDetails.FirstOrDefault();
-            vm.TeachersSkills = _appDbContext.TeachersSkills.ToList();
-            vm.TeacherSMs = _appDbContext.TeacherSMs.ToList();
-            return View(vm);
+			var existTeacher = _appDbContext.Teachers
+				.Include(p => p.Image)
+				.Include(p => p.Name)
+				.Include(p => p.Prof)
+				.Include(p=>p.TeacherDetail)
+				.Include(p=>p.TeacherSkills)
+				.Include(p=>p.TeacherSMs)
+				.FirstOrDefault(x => x.Id == id);
+			return View(existTeacher);
+			
 
 
             //return View(_appDbContext.Teachers.FirstOrDefault(x => x.Id == id));
