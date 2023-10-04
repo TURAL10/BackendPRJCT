@@ -19,7 +19,7 @@ namespace BackendPRJCT.Controllers
             vm.Teachers = _appDbContext.Teachers.ToList();
             vm.TeachersSMs = _appDbContext.TeacherSMs.ToList();
             vm.Testominal = _appDbContext.Testominals.FirstOrDefault();
-            vm.NoticeBoards = _appDbContext.NoticesBoards.ToList();
+            vm.NoticeBoards = _appDbContext.NoticesBoards.Take(6).ToList();
             return View(vm);
         }
     }

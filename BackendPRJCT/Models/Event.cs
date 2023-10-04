@@ -12,5 +12,10 @@
         public int Day {  get; set; }
         public string Month { get; set; }
         public List<Speaker> Speakers { get; set; }
+
+        public List<Category> Categories { get; set; }
+        public Banner Banner { get; set; }
+        public List<Tag> Tags { get; set; }
+        public List<LatestPost> LatestPosts { get; set; }
     }
 }

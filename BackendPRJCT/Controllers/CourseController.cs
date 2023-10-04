@@ -21,6 +21,10 @@ namespace BackendPRJCT.Controllers
         {
             var existResult = _appDbContext.Courses
                 .Include(p => p.Features)
+                .Include(p => p.Categories)
+                .Include(p => p.Banner)
+                .Include(p => p.Tags)
+                .Include(p => p.LatestPosts)
                 .FirstOrDefault(x => x.Id == id);
             return View(existResult);
         }

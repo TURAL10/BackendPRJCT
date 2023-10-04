@@ -1,5 +1,6 @@
 ﻿using BackendPRJCT.DAL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendPRJCT.Controllers
 {
@@ -18,7 +19,12 @@ namespace BackendPRJCT.Controllers
         }
         public IActionResult Details(int? id)
         {
-            var existResult = _appDbContext.Blogs.FirstOrDefault(x => x.Id == id);
+            var existResult = _appDbContext.Blogs
+                .Include(p=>p.Categories)
+                .Include(p => p.Banner)
+                .Include(p => p.Tags)
+                .Include(p => p.LatestPosts)
+                .FirstOrDefault(x => x.Id == id);
             return View(existResult);
         }
     }

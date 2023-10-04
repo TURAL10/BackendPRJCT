@@ -14,6 +14,7 @@ namespace BackendPRJCT.Controllers
 		}
 		public IActionResult Index()
 		{
+			
 			HomeVM vm = new();
 			vm.Sliders = _appDbContext.Sliders.ToList();
 			vm.RightBoards = _appDbContext.RightBoards.ToList();
