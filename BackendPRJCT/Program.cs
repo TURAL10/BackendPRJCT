@@ -11,6 +11,9 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 	opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
 });
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.MapControllerRoute(
             name: "areas",
