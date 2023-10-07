@@ -1,4 +1,4 @@
-﻿@model CreateCourseVM
+﻿@model CreateEventVM
 @{
     ViewData["Title"] = "Create";
 }
@@ -23,28 +23,37 @@
                             <span class="text-danger" asp-validation-for="Image"></span>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputName1">Title</label>
-                            <input asp-for=Title type="text" class="form-control" placeholder="Name">
+                            <label asp-for="Title"></label>
+                            <input asp-for=Title type="text" class="form-control" placeholder="Title">
                         </div>
+
                         <div class="form-group">
-                            <label for="exampleTextarea1">Description</label>
+                            <label asp-for="Description"></label>
                             <textarea asp-for=Description class="form-control" id="exampleTextarea1" rows="4"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="exampleTextarea1">About</label>
-                            <textarea asp-for=About class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                            <label asp-for="Month"></label>
+                            <input asp-for=Month class="form-control" placeholder="">
                         </div>
                         <div class="form-group">
-                            <label for="exampleTextarea1">Apply</label>
-                            <textarea asp-for=Apply class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                            <label asp-for="Day"></label>
+                            <input asp-for=Day class="form-control" placeholder="">
                         </div>
                         <div class="form-group">
-                            <label for="exampleTextarea1">Certifikation</label>
-                            <textarea asp-for=Certification class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                            <label asp-for="Time"></label>
+                            <input asp-for=Time class="form-control" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Venue"></label>
+                            <input asp-for=Venue class="form-control" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="City"></label>
+                            <input asp-for=City class="form-control" placeholder="">
                         </div>
 
                         <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
-                        <a asp-controller="course" asp-action="index" class="btn btn-light">Go Back</a>
+                        <a asp-controller="event" asp-action="index" class="btn btn-light">Go Back</a>
                     </form>
                 </div>
             </div>
@@ -54,6 +63,6 @@
 
 @section Scripts{
     <script src="~/admin/js/file-upload.js"></script>
-    <partial name="_ValidationPartial"/>
+    <partial name="_ValidationPartial" />
 }
 

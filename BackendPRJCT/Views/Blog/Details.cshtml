@@ -1,4 +1,4 @@
-﻿@model Blog
+﻿@model BlogDetailVM
 @{
     ViewData["Title"] = "Details";
 }
@@ -26,12 +26,12 @@
             <div class="col-md-8">
                 <div class="blog-details">
                     <div class="blog-details-img">
-                        <img src="img/blog/@Model.Image" alt="blog-details">
+                        <img src="img/blog/@Model.Blog.Image" alt="blog-details">
                     </div>
                     <div class="blog-details-content">
-                        <h2>@Model.Title </h2>
-                        <h6>By @Model.Name  /  @Model.Month @Model.Day, @Model.Year  /  <i class="fa fa-comments-o"></i> @Model.Comment</h6>
-                        <p>@Model.Description</p>
+                        <h2>@Model.Blog.Title </h2>
+                        <h6>By @Model.Blog.Name  /  @Model.Blog.Month @Model.Blog.Day, @Model.Blog.Year  /  <i class="fa fa-comments-o"></i> @Model.Blog.Comment</h6>
+                        <p>@Model.Blog.Description</p>
                     </div>
                     <div class="reply-area">
                         <h3>LEAVE A REPLY</h3>

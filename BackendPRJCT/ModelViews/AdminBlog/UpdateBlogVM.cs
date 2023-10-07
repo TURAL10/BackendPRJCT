@@ -1,6 +1,6 @@
-﻿namespace BackendPRJCT.Models
+﻿namespace BackendPRJCT.ModelViews.AdminBlog
 {
-    public class Blog
+    public class UpdateBlogVM
     {
         public int Id { get; set; }
         public string Image { get; set; }

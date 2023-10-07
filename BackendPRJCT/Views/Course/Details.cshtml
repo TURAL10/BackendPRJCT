@@ -1,4 +1,4 @@
-﻿@model Course
+﻿@model CourseDetailVM
 @{
     ViewData["Title"] = "Details";
 }
@@ -26,29 +26,29 @@
             <div class="col-md-8">
                 <div class="courses-details">
                     <div class="courses-details-img">
-                        <img src="img/course/@Model.Image" alt="courses-details">
+                        <img src="img/course/@Model.Course.Image" alt="courses-details">
                     </div>
                     <div class="course-details-content">
-                        <h2>@Model.Title</h2>
-                        <p>@Model.Description</p>
+                        <h2>@Model.Course.Title</h2>
+                        <p>@Model.Course.Description</p>
                         <div class="course-details-left">
                             <div class="single-course-left">
                                 <h3>about course</h3>
-                                <p>@Model.About.Substring(0,100)</p>
+                                <p>@Model.Course.About.Substring(0,100)</p>
                             </div>
                             <div class="single-course-left">
                                 <h3>how to apply</h3>
-                                <p>@Model.Apply.Substring(0,100)</p>
+                                <p>@Model.Course.Apply.Substring(0,100)</p>
                             </div>
                             <div class="single-course-left">
                                 <h3>certification</h3>
-                                <P>@Model.Certification.Substring(0,100)</P>
+                                <P>@Model.Course.Certification.Substring(0,100)</P>
                             </div>
                         </div>
                         <div class="course-details-right">
                             <h3>COURSE FEATURES</h3>
                             <ul>
-                                @foreach (var item in Model.Features)
+                                @foreach (var item in Model.Course.Features)
                                 {
                                     <li>@item.Key <span>@item.Value</span></li>
                                 }

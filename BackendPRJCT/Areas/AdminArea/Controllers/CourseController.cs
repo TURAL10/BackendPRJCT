@@ -20,18 +20,21 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
 
         public IActionResult Index()
         {
-            var existResult = _appDbContext.Courses.ToList();
+            var existResult = _appDbContext.Courses
+                .ToList();
             return View(existResult);
         }
         public IActionResult Details(int? id)
         {
             if (id == null) return NotFound();
-            var existResult = _appDbContext.Courses.FirstOrDefault(c => c.Id == id);
+            var existResult = _appDbContext.Courses
+                .FirstOrDefault(c => c.Id == id);
             if (existResult == null) return NotFound();
             return View(existResult);
         }
         public IActionResult Create()
         {
+
             return View();
         }
         [HttpPost]
@@ -72,7 +75,7 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
                 Description = existResult.Description,
                 About = existResult.About,
                 Apply = existResult.Apply,
-                Certification = existResult.Certification
+                Certification = existResult.Certification,
             };
             return View(updateCourseVM);
         }

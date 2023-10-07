@@ -1,4 +1,4 @@
-﻿@model Event
+﻿@model EventDetailVM
 @{
     ViewData["Title"] = "Details";
 }
@@ -26,21 +26,21 @@
             <div class="col-md-8">
                 <div class="event-details">
                     <div class="event-details-img">
-                        <img src="img/event/@Model.Image" alt="event-details">
+                        <img src="img/event/@Model.Event.Image" alt="event-details">
                         <div class="event-date">
-                            <h3>@Model.Day <span>@Model.Month</span></h3>
+                            <h3>@Model.Event.Day <span>@Model.Event.Month</span></h3>
                         </div>
                     </div>
                     <div class="event-details-content">
-                        <h2>@Model.Title</h2>
+                        <h2>@Model.Event.Title</h2>
                         <ul>
-                            <li><span>time : </span>@Model.Time</li>
-                            <li><span>venue : </span>@Model.Venue, @Model.City</li>
+                            <li><span>time : </span>@Model.Event.Time</li>
+                            <li><span>venue : </span>@Model.Event.Venue, @Model.Event.City</li>
                         </ul>
-                        <p>@Model.Description</p>
+                        <p>@Model.Event.Description</p>
                         <div class="speakers-area fix">
                             <h4>speakers</h4>
-                            @foreach (var item in Model.Speakers)
+                            @foreach (var item in Model.Event.Speakers)
                             {
                                 <div class="single-speaker">
                                     <div class="speaker-img">

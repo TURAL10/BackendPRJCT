@@ -5,5 +5,6 @@
 		public int Id { get; set; }
 		public string Skill { get; set; }
 		public int Percent { get; set; }
+		public int TeacherId { get; set; }
 	}
 }

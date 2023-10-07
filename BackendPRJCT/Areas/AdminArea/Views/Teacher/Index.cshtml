@@ -1,4 +1,4 @@
-﻿@model List<Blog>
+﻿@model List<Teacher>
 @{
     ViewData["Title"] = "Index";
 }
@@ -8,15 +8,15 @@
         <div class="col-lg-6 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Blog Table</h4>
+                    <h4 class="card-title">Course Table</h4>
                     <p class="card-description">
-                        <a asp-controller="blog" asp-action="create">Add Blog</a>
+                        <a asp-controller="teacher" asp-action="create">Add Teacher</a>
                     </p>
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Image</th>
-                                <th>Title</th>
+                                <th>Name</th>
                                 <th>Settings</th>
                             </tr>
                         </thead>
@@ -25,13 +25,13 @@
                             {
                                 <tr>
                                     <td>
-                                        <img width="150" height="150" src="~/img/blog/@item.Image">
+                                        <img width="150" height="150" src="~/img/teacher/@item.Image">
                                     </td>
-                                    <td>@item.Title</td>
+                                    <td>@item.Name</td>
                                     <td>
-                                        <a asp-controller="blog" asp-action="details" asp-route-id="@item.Id" class="btn btn-outline-info"><i class="mdi mdi-account-card-details"></i></a>
-                                        <a asp-controller="blog" asp-action="update" asp-route-id="@item.Id" class="btn btn-outline-warning"><i class="mdi mdi-table-edit"></i></a>
-                                        <a asp-controller="blog" asp-action="delete" asp-route-id="@item.Id" class="btn btn-outline-danger "><i class="mdi mdi-delete"></i></a>
+                                        <a asp-controller="teacher" asp-action="details" asp-route-id="@item.Id" class="btn btn-outline-info"><i class="mdi mdi-account-card-details"></i></a>
+                                        <a asp-controller="teacher" asp-action="update" asp-route-id="@item.Id" class="btn btn-outline-warning"><i class="mdi mdi-table-edit"></i></a>
+                                        <a asp-controller="teacher" asp-action="delete" asp-route-id="@item.Id" class="btn btn-outline-danger "><i class="mdi mdi-delete"></i></a>
                                     </td>
                                 </tr>
                             }
@@ -42,6 +42,4 @@
         </div>
     </div>
 </div>
-
-
 

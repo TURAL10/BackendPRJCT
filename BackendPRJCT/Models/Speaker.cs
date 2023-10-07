@@ -6,5 +6,6 @@
         public string Image { get; set; }
         public string Name { get; set; }
         public string Prof { get; set; }
+        public int EventId { get; set; }
     }
 }
