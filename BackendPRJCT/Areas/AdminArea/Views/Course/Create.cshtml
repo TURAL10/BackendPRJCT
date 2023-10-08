@@ -10,12 +10,12 @@
                 <div class="card-body">
                     <h4 class="card-title">Basic form elements</h4>
                     <p class="card-description"> Basic form elements </p>
-                    <form class="forms-sample">
+                    <form class="forms-sample" enctype="multipart/form-data" asp-controller="Course" asp-action="create">
                         <div class="form-group">
                             <label>File upload</label>
                             <input type="file" class="file-upload-default">
                             <div class="input-group col-xs-12">
-                                <input asp-for=Image type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                                <input asp-for=Image class="form-control file-upload-info" placeholder="Upload Image">
                                 <span class="input-group-append">
                                     <button class="file-upload-browse btn btn-gradient-primary" type="button">Upload</button>
                                 </span>
@@ -53,7 +53,7 @@
 </div>
 
 @section Scripts{
-    <script src="~/admin/js/file-upload.js"></script>
+    
     <partial name="_ValidationPartial"/>
 }
 

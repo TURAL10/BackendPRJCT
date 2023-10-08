@@ -1,6 +1,7 @@
 ﻿using BackendPRJCT.DAL;
 using BackendPRJCT.Models;
 using BackendPRJCT.ModelViews.AdminBlog;
+using BackendPRJCT.ModelViews.AdminCourse;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +11,12 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
     public class BlogController : Controller
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public BlogController(AppDbContext context)
+        public BlogController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _appDbContext = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -48,7 +51,6 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
                 ModelState.AddModelError("Title", "This title doesn't exits");
             }
             Blog blog = new();
-            blog.Image = createBlogVM.Image;
             blog.Title = createBlogVM.Title;
             blog.Name = createBlogVM.Name;
             blog.Description = createBlogVM.Description;
@@ -56,6 +58,13 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             blog.Day = createBlogVM.Day;
             blog.Year = createBlogVM.Year;
             blog.Comment = createBlogVM.Comment;
+            string filename = Guid.NewGuid() + createBlogVM.Image.FileName;
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/blog", filename);
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                createBlogVM.Image.CopyTo(stream);
+            }
+            blog.Image = filename;
             _appDbContext.Blogs.Add(blog);
             _appDbContext.SaveChanges();
 
@@ -70,7 +79,6 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             var updadeBlogVM = new UpdateBlogVM
             {
                 Id = existResult.Id,
-                Image = existResult.Image,
                 Title = existResult.Title,
                 Name = existResult.Name,
                 Description = existResult.Description,
@@ -94,7 +102,6 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
                 return View();
             }
 
-            existResult.Image = updadeBlogVM.Image;
             existResult.Title = updadeBlogVM.Title;
             existResult.Name = updadeBlogVM.Name;
             existResult.Description = updadeBlogVM.Description;
@@ -102,6 +109,13 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             existResult.Day = updadeBlogVM.Day;
             existResult.Year = updadeBlogVM.Year;
             existResult.Comment = updadeBlogVM.Comment;
+            string filename = Guid.NewGuid() + updadeBlogVM.Image.FileName;
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/blog", filename);
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                updadeBlogVM.Image.CopyTo(stream);
+            }
+            existResult.Image = filename;
 
             _appDbContext.SaveChanges();
 

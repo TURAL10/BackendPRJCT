@@ -1,5 +1,6 @@
 ﻿using BackendPRJCT.DAL;
 using BackendPRJCT.Models;
+using BackendPRJCT.ModelViews.AdminCourse;
 using BackendPRJCT.ModelViews.AdminTeacher;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,12 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
     public class TeacherController : Controller
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public TeacherController(AppDbContext context)
+        public TeacherController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _appDbContext = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -44,7 +47,6 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
                 ModelState.AddModelError("Name", "This Name doesn't exits");
             }
             Teacher teacher = new();
-            teacher.Image = createTeacherVM.Image;
             teacher.Name = createTeacherVM.Name;
             teacher.Prof = createTeacherVM.Prof;
 
@@ -56,6 +58,13 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             teacher.Mail = createTeacherVM.Mail;
             teacher.Number = createTeacherVM.Number;
             teacher.Skype = createTeacherVM.Skype;
+            string filename = Guid.NewGuid() + createTeacherVM.Image.FileName;
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/teacher", filename);
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                createTeacherVM.Image.CopyTo(stream);
+            }
+            teacher.Image = filename;
             _appDbContext.Teachers.Add(teacher);
             _appDbContext.SaveChanges();
 
@@ -70,7 +79,6 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             var updateteacherVM = new UpdateTeacherVM
             {
                 Id = existResult.Id,
-                Image = existResult.Image,
                 Name = existResult.Name,
                 Prof = existResult.Prof,
 
@@ -99,7 +107,6 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
                 return View();
             }
 
-            existResult.Image = updateTeacherVM.Image;
             existResult.Name = updateTeacherVM.Name;
             existResult.Prof = updateTeacherVM.Prof;
 
@@ -111,6 +118,14 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             existResult.Mail = updateTeacherVM.Mail;
             existResult.Number = updateTeacherVM.Number;
             existResult.Skype = updateTeacherVM.Skype;
+
+            string filename = Guid.NewGuid() + updateTeacherVM.Image.FileName;
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/course", filename);
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                updateTeacherVM.Image.CopyTo(stream);
+            }
+            existResult.Image = filename;
             _appDbContext.SaveChanges();
 
             return RedirectToAction("Index");

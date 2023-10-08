@@ -6,7 +6,7 @@ namespace BackendPRJCT.ModelViews.AdminTeacher
     {
         public int Id { get; set; }
         [Required]
-        public string Image { get; set; }
+        public IFormFile Image { get; set; }
         public string Name { get; set; }
         public string Prof { get; set; }
         public string AboutMe { get; set; }

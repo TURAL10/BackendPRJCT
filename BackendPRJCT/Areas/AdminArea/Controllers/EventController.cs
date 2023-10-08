@@ -1,5 +1,6 @@
 ﻿using BackendPRJCT.DAL;
 using BackendPRJCT.Models;
+using BackendPRJCT.ModelViews.AdminCourse;
 using BackendPRJCT.ModelViews.AdminEvent;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +11,12 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
     public class EventController : Controller
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EventController(AppDbContext context)
+        public EventController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _appDbContext = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -48,7 +51,6 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
                 ModelState.AddModelError("Title", "This title doesn't exits");
             }
             Event events = new();
-            events.Image = createEventVM.Image;
             events.Title = createEventVM.Title;
             events.Description = createEventVM.Description;
             events.Time = createEventVM.Time;
@@ -56,6 +58,13 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             events.City = createEventVM.City;
             events.Day = createEventVM.Day;
             events.Month = createEventVM.Month;
+            string filename = Guid.NewGuid() + createEventVM.Image.FileName;
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/event", filename);
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                createEventVM.Image.CopyTo(stream);
+            }
+            events.Image = filename;
             _appDbContext.Events.Add(events);
             _appDbContext.SaveChanges();
 
@@ -70,7 +79,6 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             var updateeventVM = new UpdateEventVM
             {
                 Id = existResult.Id,
-                Image = existResult.Image,
                 Title = existResult.Title,
                 Description = existResult.Description,
                 Month = existResult.Month,
@@ -94,7 +102,6 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
                 return View();
             }
 
-            existResult.Image = updateEventVM.Image;
             existResult.Title = updateEventVM.Title;
             existResult.Description = updateEventVM.Description;
             existResult.Month = updateEventVM.Month;
@@ -102,6 +109,13 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             existResult.Time = updateEventVM.Time;
             existResult.Venue = updateEventVM.Venue;
             existResult.City = updateEventVM.City;
+            string filename = Guid.NewGuid() + updateEventVM.Image.FileName;
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/event", filename);
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                updateEventVM.Image.CopyTo(stream);
+            }
+            existResult.Image = filename;
 
             _appDbContext.SaveChanges();
 

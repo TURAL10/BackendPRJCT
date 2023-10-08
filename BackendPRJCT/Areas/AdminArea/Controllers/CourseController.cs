@@ -12,10 +12,12 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
     public class CourseController : Controller
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CourseController(AppDbContext context)
+        public CourseController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _appDbContext = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -50,12 +52,18 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
                 ModelState.AddModelError("Title", "This title doesn't exits");
             }
             Course course = new();
-            course.Image = createCourseVM.Image;
             course.Title = createCourseVM.Title;
             course.Description = createCourseVM.Description;
             course.About = createCourseVM.About;
             course.Apply = createCourseVM.Apply;
             course.Certification = createCourseVM.Certification;
+            string filename=Guid.NewGuid()+createCourseVM.Image.FileName;
+            string path = Path.Combine(_webHostEnvironment.WebRootPath,"img/course", filename);
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                createCourseVM.Image.CopyTo(stream);
+            }
+            course.Image = filename;
             _appDbContext.Courses.Add(course);
             _appDbContext.SaveChanges();
 
@@ -70,7 +78,7 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             var updateCourseVM = new UpdateCourseVM
             {
                 Id = existResult.Id,
-                Image = existResult.Image,
+                //Image = existResult.Image,
                 Title = existResult.Title,
                 Description = existResult.Description,
                 About = existResult.About,
@@ -92,12 +100,18 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
                 return View();
             }
 
-            existResult.Image = updateCourseVM.Image;
             existResult.Title = updateCourseVM.Title;
             existResult.Description = updateCourseVM.Description;
             existResult.About = updateCourseVM.About;
             existResult.Apply = updateCourseVM.Apply;
             existResult.Certification = updateCourseVM.Certification;
+            string filename = Guid.NewGuid() + updateCourseVM.Image.FileName;
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/course", filename);
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                updateCourseVM.Image.CopyTo(stream);
+            }
+            existResult.Image = filename;
             _appDbContext.SaveChanges();
 
             return RedirectToAction("Index");
