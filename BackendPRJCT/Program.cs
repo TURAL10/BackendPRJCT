@@ -11,6 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 	opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
 });
 var app = builder.Build();
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 

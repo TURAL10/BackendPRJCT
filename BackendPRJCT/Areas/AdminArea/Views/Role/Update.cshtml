@@ -1,0 +1,21 @@
+﻿@model UpdateRoleVM
+
+
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>@Model.User.FullName</h1>
+
+<form method="post">
+
+    @foreach (var roles in Model.Roles)
+    {
+        <input @(Model.UserRoles.Any(ur => ur == roles.Name) ? "checked" : "") type="checkbox" value="@roles.Name" name="roles" />
+
+        @roles.Name <br />
+    }
+    <button type="submit">Change ..</button>
+
+</form>
