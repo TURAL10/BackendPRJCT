@@ -2,6 +2,7 @@
 using BackendPRJCT.Models;
 using BackendPRJCT.ModelViews.AdminBlog;
 using BackendPRJCT.ModelViews.AdminSlider;
+using BackendPRJCT.ModelViews.AdminSpeaker;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendPRJCT.Areas.AdminArea.Controllers
@@ -94,13 +95,27 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
 
             existResult.Title = updateSlider.Title;
             existResult.Desc = updateSlider.Desc;
-            string filename = Guid.NewGuid() + updateSlider.Image.FileName;
-            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/slider", filename);
-            using (FileStream stream = new FileStream(path, FileMode.Create))
+            if (updateSlider.Image != null)
             {
-                updateSlider.Image.CopyTo(stream);
+
+                if (!updateSlider.Image.ContentType.Contains("image/"))
+                {
+                    ModelState.AddModelError("Photo", "only image");
+                    return View();
+                }
+                if (updateSlider.Image.Length / 1024 > 1000)
+                {
+                    ModelState.AddModelError("Photo", "Size is High");
+                    return View();
+                }
+                string filename = Guid.NewGuid() + updateSlider.Image.FileName;
+                string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/slider", filename);
+                using (FileStream stream = new FileStream(path, FileMode.Create))
+                {
+                    updateSlider.Image.CopyTo(stream);
+                }
+                existResult.Image = filename;
             }
-            existResult.Image = filename;
 
             _appDbContext.SaveChanges();
 

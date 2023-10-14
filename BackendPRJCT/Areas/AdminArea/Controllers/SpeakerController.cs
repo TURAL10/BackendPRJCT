@@ -1,5 +1,6 @@
 ﻿using BackendPRJCT.DAL;
 using BackendPRJCT.Models;
+using BackendPRJCT.ModelViews.AdminBlog;
 using BackendPRJCT.ModelViews.AdminEvent;
 using BackendPRJCT.ModelViews.AdminSpeaker;
 using Microsoft.AspNetCore.Mvc;
@@ -100,22 +101,39 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             if (!ModelState.IsValid) return View();
             var existResult = _appDbContext.Speakers.FirstOrDefault(i => i.Id == updateSpeaker.Id);
 
-            if (_appDbContext.Speakers.Any(c => c.Name == updateSpeaker.Name && c.Id != existResult.Id))
-            {
-                ModelState.AddModelError("Name", "artiq movcutdur");
-                return View();
-            }
+            //if (_appDbContext.Speakers.Any(c => c.Name == updateSpeaker.Name && c.Id != existResult.Id))
+            //{
+            //    ModelState.AddModelError("Name", "artiq movcutdur");
+            //    return View();
+            //}
 
             existResult.Name = updateSpeaker.Name;
             existResult.Prof = updateSpeaker.Prof;
 
-            string filename = Guid.NewGuid() + updateSpeaker.Image.FileName;
-            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/event", filename);
-            using (FileStream stream = new FileStream(path, FileMode.Create))
+
+            if (updateSpeaker.Image != null)
             {
-                updateSpeaker.Image.CopyTo(stream);
+
+                if (!updateSpeaker.Image.ContentType.Contains("image/"))
+                {
+                    ModelState.AddModelError("Photo", "only image");
+                    return View();
+                }
+                if (updateSpeaker.Image.Length / 1024 > 1000)
+                {
+                    ModelState.AddModelError("Photo", "Size is High");
+                    return View();
+                }
+                string filename = Guid.NewGuid() + updateSpeaker.Image.FileName;
+                string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/event", filename);
+                using (FileStream stream = new FileStream(path, FileMode.Create))
+                {
+                    updateSpeaker.Image.CopyTo(stream);
+                }
+                existResult.Image = filename;
             }
-            existResult.Image = filename;
+
+            
 
             foreach (var speakerId in updateSpeaker.EventId)
             {

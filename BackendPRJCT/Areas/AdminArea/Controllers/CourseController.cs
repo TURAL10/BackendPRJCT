@@ -5,6 +5,7 @@ using BackendPRJCT.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BackendPRJCT.ModelViews.AdminCourse;
+using BackendPRJCT.ModelViews.AdminSpeaker;
 
 namespace BackendPRJCT.Areas.AdminArea.Controllers
 {
@@ -105,13 +106,26 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             existResult.About = updateCourseVM.About;
             existResult.Apply = updateCourseVM.Apply;
             existResult.Certification = updateCourseVM.Certification;
-            string filename = Guid.NewGuid() + updateCourseVM.Image.FileName;
-            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/course", filename);
-            using (FileStream stream = new FileStream(path, FileMode.Create))
+            if (updateCourseVM.Image != null)
             {
-                updateCourseVM.Image.CopyTo(stream);
+                if (!updateCourseVM.Image.ContentType.Contains("image/"))
+                {
+                    ModelState.AddModelError("Photo", "only image");
+                    return View();
+                }
+                if (updateCourseVM.Image.Length / 1024 > 1000)
+                {
+                    ModelState.AddModelError("Photo", "Size is High");
+                    return View();
+                }
+                string filename = Guid.NewGuid() + updateCourseVM.Image.FileName;
+                string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/course", filename);
+                using (FileStream stream = new FileStream(path, FileMode.Create))
+                {
+                    updateCourseVM.Image.CopyTo(stream);
+                }
+                existResult.Image = filename;
             }
-            existResult.Image = filename;
             _appDbContext.SaveChanges();
 
             return RedirectToAction("Index");

@@ -10,7 +10,7 @@
         <!-- Start Slingle Slide -->
         @foreach (var item in Model.Sliders)
         {
-            <div class="single-slide item" style="background-image: url(img/slider/@item.Image)">
+            <div class="single-slide item" style="background-image: url(~/img/slider/@item.Image)">
                 <div class="slider-content-area">
                     <div class="container">
                         <div class="row">
@@ -19,7 +19,7 @@
                                     <div class="slide-content">
                                         <h3>@item.Title</h3>
                                         <p>@item.Desc </p>
-                                        <a class="default-btn" href="about.html">Learn more</a>
+                                        <a class="default-btn" asp-controller="about" asp-action="index">Learn more</a>
                                     </div>
                                 </div>
                             </div>

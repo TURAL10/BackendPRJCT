@@ -2,6 +2,7 @@
 using BackendPRJCT.Models;
 using BackendPRJCT.ModelViews.AdminBlog;
 using BackendPRJCT.ModelViews.AdminCourse;
+using BackendPRJCT.ModelViews.AdminSpeaker;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -109,13 +110,27 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             existResult.Day = updadeBlogVM.Day;
             existResult.Year = updadeBlogVM.Year;
             existResult.Comment = updadeBlogVM.Comment;
-            string filename = Guid.NewGuid() + updadeBlogVM.Image.FileName;
-            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/blog", filename);
-            using (FileStream stream = new FileStream(path, FileMode.Create))
+            if (updadeBlogVM.Image != null)
             {
-                updadeBlogVM.Image.CopyTo(stream);
+
+                if (!updadeBlogVM.Image.ContentType.Contains("image/"))
+                {
+                    ModelState.AddModelError("Photo", "only image");
+                    return View();
+                }
+                if (updadeBlogVM.Image.Length / 1024 > 1000)
+                {
+                    ModelState.AddModelError("Photo", "Size is High");
+                    return View();
+                }
+                string filename = Guid.NewGuid() + updadeBlogVM.Image.FileName;
+                string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/blog", filename);
+                using (FileStream stream = new FileStream(path, FileMode.Create))
+                {
+                    updadeBlogVM.Image.CopyTo(stream);
+                }
+                existResult.Image = filename;
             }
-            existResult.Image = filename;
 
             _appDbContext.SaveChanges();
 

@@ -1,6 +1,7 @@
 ﻿using BackendPRJCT.DAL;
 using BackendPRJCT.Models;
 using BackendPRJCT.ModelViews.AdminCourse;
+using BackendPRJCT.ModelViews.AdminSpeaker;
 using BackendPRJCT.ModelViews.AdminTeacher;
 using Microsoft.AspNetCore.Mvc;
 
@@ -119,13 +120,27 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             existResult.Number = updateTeacherVM.Number;
             existResult.Skype = updateTeacherVM.Skype;
 
-            string filename = Guid.NewGuid() + updateTeacherVM.Image.FileName;
-            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/course", filename);
-            using (FileStream stream = new FileStream(path, FileMode.Create))
+            if (updateTeacherVM.Image != null)
             {
-                updateTeacherVM.Image.CopyTo(stream);
+
+                if (!updateTeacherVM.Image.ContentType.Contains("image/"))
+                {
+                    ModelState.AddModelError("Photo", "only image");
+                    return View();
+                }
+                if (updateTeacherVM.Image.Length / 1024 > 1000)
+                {
+                    ModelState.AddModelError("Photo", "Size is High");
+                    return View();
+                }
+                string filename = Guid.NewGuid() + updateTeacherVM.Image.FileName;
+                string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/teacher", filename);
+                using (FileStream stream = new FileStream(path, FileMode.Create))
+                {
+                    updateTeacherVM.Image.CopyTo(stream);
+                }
+                existResult.Image = filename;
             }
-            existResult.Image = filename;
             _appDbContext.SaveChanges();
 
             return RedirectToAction("Index");

@@ -2,6 +2,7 @@
 using BackendPRJCT.Models;
 using BackendPRJCT.ModelViews.AdminCourse;
 using BackendPRJCT.ModelViews.AdminEvent;
+using BackendPRJCT.ModelViews.AdminSpeaker;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -109,13 +110,27 @@ namespace BackendPRJCT.Areas.AdminArea.Controllers
             existResult.Time = updateEventVM.Time;
             existResult.Venue = updateEventVM.Venue;
             existResult.City = updateEventVM.City;
-            string filename = Guid.NewGuid() + updateEventVM.Image.FileName;
-            string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/event", filename);
-            using (FileStream stream = new FileStream(path, FileMode.Create))
+            if (updateEventVM.Image != null)
             {
-                updateEventVM.Image.CopyTo(stream);
+
+                if (!updateEventVM.Image.ContentType.Contains("image/"))
+                {
+                    ModelState.AddModelError("Photo", "only image");
+                    return View();
+                }
+                if (updateEventVM.Image.Length / 1024 > 1000)
+                {
+                    ModelState.AddModelError("Photo", "Size is High");
+                    return View();
+                }
+                string filename = Guid.NewGuid() + updateEventVM.Image.FileName;
+                string path = Path.Combine(_webHostEnvironment.WebRootPath, "img/event", filename);
+                using (FileStream stream = new FileStream(path, FileMode.Create))
+                {
+                    updateEventVM.Image.CopyTo(stream);
+                }
+                existResult.Image = filename;
             }
-            existResult.Image = filename;
 
             _appDbContext.SaveChanges();
 
